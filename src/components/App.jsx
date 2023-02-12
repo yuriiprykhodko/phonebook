@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ContactForm } from './ContactForm/ContactForm';
-
+import {ContactList} from './ContactList/ContactList'
 
 
 
@@ -11,7 +11,11 @@ export class App extends Component{
     contacts: [],
     filter:''
 }
-
+  onSubmit = (value) => {
+    this.setState(prevState => {
+      return {contacts:[value,...prevState.contacts]}
+    })
+}
   render() {
     return (
     <div
@@ -25,11 +29,11 @@ export class App extends Component{
       // }}
     >
      <h1>Phonebook</h1>
-  <ContactForm />
+        <ContactForm onSubmit={this.onSubmit} />
 
   <h2>Contacts</h2>
   {/* <Filter ... /> */}
-  {/* <ContactList ... /> */}
+  <ContactList contacts={this.state.contacts} />
     </div>
   );
   }
