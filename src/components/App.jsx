@@ -18,24 +18,6 @@ import { Filter } from './Filter/Filter';
 
 export const App = () => {
   
-  //const [contacts, setContacts] = useState(()=>JSON.parse(localStorage.getItem('contacts')??initialContacts));
-  // const [filter, setFilter] = useState('');
-  // const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
-  
-  // const addContact = ({name,number}) => {
-  //    if (contacts.some(contact=>contact.name===name)) {
-  //       alert(`${name} is already contact`)
-  //       return;
-  //   }
-  //   const contact = {
-  //     id: nanoid(),
-  //     name,
-  //     number
-  //   }
-  // setContacts([contact,...contacts])
-    
-  // }
-  
   // useEffect(() => {
   //     localStorage.setItem("contacts",JSON.stringify(contacts))
   // },[contacts])
