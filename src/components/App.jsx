@@ -1,68 +1,125 @@
-import {useState,useEffect} from 'react'
 import { ContactForm } from './ContactForm/ContactForm';
 import {ContactList} from './ContactList/ContactList'
-import { nanoid } from 'nanoid';
 import { Filter } from './Filter/Filter';
-import initialContacts from './contacts';
 
-function useLocalStorage(key, defaultValue) {
-  const [state, setState] = useState(() => {
-    return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue;
-  });
+ 
+// function useLocalStorage(key, defaultValue) {
+//   const [state, setState] = useState(() => {
+//     return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue;
+//   });
 
-  useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(state));
-  }, [key, state]);
+//   useEffect(() => {
+//     window.localStorage.setItem(key, JSON.stringify(state));
+//   }, [key, state]);
 
-  return [state, setState];
-}
+//   return [state, setState];
+// }
 
 
 export const App = () => {
   
   //const [contacts, setContacts] = useState(()=>JSON.parse(localStorage.getItem('contacts')??initialContacts));
-  const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
+  // const [filter, setFilter] = useState('');
+  // const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
   
-  const addContact = ({name,number}) => {
-     if (contacts.some(contact=>contact.name===name)) {
-        alert(`${name} is already contact`)
-        return;
-    }
-    const contact = {
-      id: nanoid(),
-      name,
-      number
-    }
-  setContacts([contact,...contacts])
+  // const addContact = ({name,number}) => {
+  //    if (contacts.some(contact=>contact.name===name)) {
+  //       alert(`${name} is already contact`)
+  //       return;
+  //   }
+  //   const contact = {
+  //     id: nanoid(),
+  //     name,
+  //     number
+  //   }
+  // setContacts([contact,...contacts])
     
-  }
-  const changeFilter = (e) => {
-    setFilter(e.target.value)
-  }
-  const getVisibleContacts = () => {
-    const newFilter = filter.toLowerCase();
-    return contacts.filter(contact => contact.name.toLowerCase().includes(newFilter));
-  }
-  const deleteContact = (contactId) => {
-    setContacts(prevState=>prevState.filter(contact => contact.id !== contactId))
-  }
-  useEffect(() => {
-      localStorage.setItem("contacts",JSON.stringify(contacts))
-  },[contacts])
+  // }
+  
+  // useEffect(() => {
+  //     localStorage.setItem("contacts",JSON.stringify(contacts))
+  // },[contacts])
   
     return (
     <div>
      <h1>Phonebook</h1>
-        <ContactForm onSubmit={addContact} />
-
-  <h2>Contacts</h2>
-        <Filter onChange={changeFilter} />
-        <ContactList contacts={getVisibleContacts()} onDelete={deleteContact} />
+        <ContactForm />
+     <h2>Contacts</h2>
+        <Filter />
+        <ContactList />
     </div>
   );
 };
+//////////////////hooks////////////
+// import {useState,useEffect} from 'react'
+// import { ContactForm } from './ContactForm/ContactForm';
+// import {ContactList} from './ContactList/ContactList'
+// import { nanoid } from 'nanoid';
+// import { Filter } from './Filter/Filter';
+// import initialContacts from './contacts';
 
+
+// function useLocalStorage(key, defaultValue) {
+//   const [state, setState] = useState(() => {
+//     return JSON.parse(window.localStorage.getItem(key)) ?? defaultValue;
+//   });
+
+//   useEffect(() => {
+//     window.localStorage.setItem(key, JSON.stringify(state));
+//   }, [key, state]);
+
+//   return [state, setState];
+// }
+
+
+// export const App = () => {
+  
+//   //const [contacts, setContacts] = useState(()=>JSON.parse(localStorage.getItem('contacts')??initialContacts));
+//   const [filter, setFilter] = useState('');
+//   const [contacts, setContacts] = useLocalStorage('contacts', initialContacts);
+  
+//   const addContact = ({name,number}) => {
+//      if (contacts.some(contact=>contact.name===name)) {
+//         alert(`${name} is already contact`)
+//         return;
+//     }
+//     const contact = {
+//       id: nanoid(),
+//       name,
+//       number
+//     }
+//   setContacts([contact,...contacts])
+    
+//   }
+
+  
+//   const changeFilter = (e) => {
+
+//     setFilter(e.target.value)
+//   }
+//   const getVisibleContacts = () => {
+//     const newFilter = filter.toLowerCase();
+//     return contacts.filter(contact => contact.name.toLowerCase().includes(newFilter));
+//   }
+//   const deleteContact = (contactId) => {
+//     setContacts(prevState=>prevState.filter(contact => contact.id !== contactId))
+//   }
+//   useEffect(() => {
+//       localStorage.setItem("contacts",JSON.stringify(contacts))
+//   },[contacts])
+  
+//     return (
+//     <div>
+//      <h1>Phonebook</h1>
+//         <ContactForm onSubmit={addContact} />
+
+//   <h2>Contacts</h2>
+//         <Filter onChange={changeFilter} />
+//         <ContactList contacts={getVisibleContacts()} onDelete={deleteContact} />
+//     </div>
+//   );
+// };
+/////////////////////classes////////////////
 //import React, { Component } from 'react'
 // export class App extends Component{
 //   state = {

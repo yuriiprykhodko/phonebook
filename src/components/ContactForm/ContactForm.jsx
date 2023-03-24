@@ -1,8 +1,9 @@
 //import React, { Component } from 'react';
 import { Formik, Form,Field,ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { useDispatch } from "react-redux";
-import {addContact} from '../../redux/store';
+import { useDispatch, useSelector } from "react-redux";
+import { addContact } from '../../redux/store';
+
 let schema = yup.object().shape({
   name: yup.string().required(),
   number: yup.string().min(9).max(9).required(),
@@ -24,12 +25,16 @@ const initialValues = {
    number:''
 }
 
-export const ContactForm=({onSubmit})=>{
+export const ContactForm=()=>{
     const dispatch = useDispatch();
-    
-        const handleSubmit = (values,{resetForm}) => {
+    const contacts = useSelector(state => state.contacts);
+    const handleSubmit = (values, { resetForm }) => {
+             
+        if (contacts.some(contact => contact.name === values.name)) {
+            alert(`${values.name} is already contact`)
+            return;
+        }
             dispatch(addContact(values));
-            onSubmit(values);
             resetForm();
     }
     return (
