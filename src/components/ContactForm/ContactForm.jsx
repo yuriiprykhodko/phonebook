@@ -27,7 +27,7 @@ const initialValues = {
 
 export const ContactForm=()=>{
     const dispatch = useDispatch();
-    const contacts = useSelector(state => state.contacts);
+    const contacts = useSelector(state => state.contacts.contacts);
     const handleSubmit = (values, { resetForm }) => {
              
         if (contacts.some(contact => contact.name === values.name)) {

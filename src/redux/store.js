@@ -53,11 +53,13 @@ const initialFilter = '';
 
 const contactSlice = createSlice({
   name: 'contacts',
-  initialState: initialContacts,
+  initialState: {
+    contacts: initialContacts,
+  },
   reducers: {
     addContact: {
       reducer(state, action) {
-        state.push(action.payload);
+        state.contacts.push(action.payload);
       },
       prepare({ name, number }) {
         return {
@@ -70,14 +72,16 @@ const contactSlice = createSlice({
       },
     },
     deleteContact(state, action) {
-      const index = state.findIndex(contact => contact.id === action.payload);
-      state.splice(index, 1);
+      const index = state.contacts.findIndex(
+        contact => contact.id === action.payload
+      );
+      state.contacts.splice(index, 1);
     },
   },
 });
 
 export const { addContact, deleteContact } = contactSlice.actions;
-const contactReducer = contactSlice.reducer;
+const contactsReducer = contactSlice.reducer;
 
 const filterSlice = createSlice({
   name: 'filter',
@@ -97,12 +101,13 @@ export const filterReducer = filterSlice.reducer;
 const persistConfig = {
   key: 'contacts',
   storage,
+  blacklist: ['filter'],
 };
-const persistedReducer = persistReducer(persistConfig, contactReducer);
+const persistedContactsReducer = persistReducer(persistConfig, contactsReducer);
 
 export const store = configureStore({
   reducer: {
-    contacts: persistedReducer,
+    contacts: persistedContactsReducer,
     filter: filterReducer,
   },
   middleware: getDefaultMiddleware =>
