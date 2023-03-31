@@ -27,9 +27,10 @@ const initialValues = {
 
 export const ContactForm=()=>{
     const dispatch = useDispatch();
-    const contacts = useSelector(state => state.contacts.contacts);
+    const contacts = useSelector(state => state.contacts);
     const handleSubmit = (values, { resetForm }) => {
-             
+                 console.log(values)
+
         if (contacts.some(contact => contact.name === values.name)) {
             alert(`${values.name} is already contact`)
             return;

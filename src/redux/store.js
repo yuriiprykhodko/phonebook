@@ -1,6 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
+//https://642573d19e0a30d92b3270a3.mockapi.io/:contacts
+
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createSlice, nanoid } from '@reduxjs/toolkit';
-import initialContacts from '../components/contacts.json';
+//import initialContacts from '../components/contacts.json';
 import {
   persistStore,
   persistReducer,
@@ -53,13 +55,11 @@ const initialFilter = '';
 
 const contactSlice = createSlice({
   name: 'contacts',
-  initialState: {
-    contacts: initialContacts,
-  },
+  initialState: [],
   reducers: {
     addContact: {
       reducer(state, action) {
-        state.contacts.push(action.payload);
+        state.push(action.payload);
       },
       prepare({ name, number }) {
         return {
@@ -75,7 +75,7 @@ const contactSlice = createSlice({
       const index = state.contacts.findIndex(
         contact => contact.id === action.payload
       );
-      state.contacts.splice(index, 1);
+      state.splice(index, 1);
     },
   },
 });
@@ -97,19 +97,20 @@ export const { setFilter } = filterSlice.actions;
 export const filterReducer = filterSlice.reducer;
 
 /////////////////////////////////////////////
+const rootReducer = combineReducers({
+  contacts: contactsReducer,
+  filter: filterReducer,
+});
 
 const persistConfig = {
   key: 'contacts',
   storage,
-  blacklist: ['filter'],
+  whitelist: ['contacts'],
 };
-const persistedContactsReducer = persistReducer(persistConfig, contactsReducer);
+const persistedContactsReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    contacts: persistedContactsReducer,
-    filter: filterReducer,
-  },
+  reducer: persistedContactsReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
