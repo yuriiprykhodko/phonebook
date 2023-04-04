@@ -2,7 +2,7 @@
 import { Formik, Form,Field,ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from '../../redux/store';
+import { addContact } from '../../redux/operations';
 
 let schema = yup.object().shape({
   name: yup.string().required(),
@@ -27,10 +27,9 @@ const initialValues = {
 
 export const ContactForm=()=>{
     const dispatch = useDispatch();
-    const contacts = useSelector(state => state.contacts);
-    const handleSubmit = (values, { resetForm }) => {
-                 console.log(values)
+    const contacts = useSelector(state => state.contacts.items);
 
+    const handleSubmit = (values, { resetForm }) => {
         if (contacts.some(contact => contact.name === values.name)) {
             alert(`${values.name} is already contact`)
             return;
