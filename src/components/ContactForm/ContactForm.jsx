@@ -1,8 +1,7 @@
-//import React, { Component } from 'react';
+
 import { Formik, Form,Field,ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from "react-redux";
-import { addContact } from '../../redux/operations';
+import { useAddContactMutation } from 'redux/contactsSlice';
 
 let schema = yup.object().shape({
   name: yup.string().required(),
@@ -25,17 +24,23 @@ const initialValues = {
    number:''
 }
 
-export const ContactForm=()=>{
-    const dispatch = useDispatch();
-    const contacts = useSelector(state => state.contacts.items);
+export const ContactForm=({items})=>{
 
-    const handleSubmit = (values, { resetForm }) => {
-        if (contacts.some(contact => contact.name === values.name)) {
+const [addContact, result] = useAddContactMutation()
+    
+    const handleSubmit = async (values, { resetForm }) => {  
+        try {
+             if (items && items.some(contact => contact.name === values.name)) {
             alert(`${values.name} is already contact`)
             return;
-        }
-            dispatch(addContact(values));
+            }
+            if (result.isSuccess) {
+                alert(`${values.name} is added`)
+            }
+           await addContact(values)
             resetForm();
+        } catch (error) {
+        }
     }
     return (
             <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={schema} >
@@ -50,41 +55,9 @@ export const ContactForm=()=>{
                     <Field type="tel" name='number' />
                     <FormError name="number" /> 
                 </label>
-                <button type='submit'>add contact</button>
+                <button type='submit' disabled={result.isLoading}>add contact</button>
             </Form>
             </Formik>
         )
     }
 
-// export class ContactForm extends Component {
-//     state = {
-//         name: '',
-//         number:''
-//     }
-    
-//     handelChange = (e) => {
-//         const { name, value } = e.target;
-//         this.setState({[name]:value})
-//     }
-//     handelSubmit = (e) => {
-//         e.preventDefault();
-//         this.props.onSubmit({ ...this.state })
-//         this.setState({ name: '', number:''})
-//     }
-//     render() {
-//         const { name,number } = this.state;
-//         return (
-//             <form onSubmit={this.handelSubmit}>
-//                 <label htmlFor="">
-//                     Name
-//                     <input type="text" name= 'name' value={name} onChange={this.handelChange}/>
-//                 </label>
-//                 <label htmlFor="">
-//                     Number 
-//                      <input type="tel" name='number' value={number} onChange={this.handelChange}/>
-//                 </label>
-//                 <button type='submit'>add contact</button>
-//             </form>
-//         )
-//     }
-// }
